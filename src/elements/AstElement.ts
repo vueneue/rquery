@@ -62,6 +62,7 @@ export class AstElement {
         }
       }
     }
+    return this;
   }
 
   public replace(node) {
@@ -82,18 +83,19 @@ export class AstElement {
           return item === this.node;
         });
         if (index >= 0) {
+          this.node = node;
           parentNode[prop][index] = node;
           break;
         }
       } else {
         if (parentNode[prop] === this.node) {
+          this.node = node;
           parentNode[prop] = node;
           break;
         }
       }
     }
-
-    return createFromNode(node);
+    return this;
   }
 
   public static getType() {
