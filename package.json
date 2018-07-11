@@ -1,0 +1,26 @@
+{
+  "name": "@vueneue/rquery",
+  "version": "0.1.0",
+  "description": "Helpers to traverse and manipulate AST with recast",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "postinstall": "npm run build",
+    "build": "tsc"
+  },
+  "keywords": [
+    "recast",
+    "query",
+    "ast"
+  ],
+  "author": "Simon Babay <simon@babay.fr>",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/parser": "^7.0.0-beta.52",
+    "@types/node": "^10.5.2",
+    "lodash": "^4.17.10",
+    "prettier": "^1.13.7",
+    "recast": "^0.15.2",
+    "typescript": "^2.9.2"
+  }
+}
