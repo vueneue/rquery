@@ -3,15 +3,17 @@ import * as recast from 'recast';
 import { AstElement } from './elements';
 import { Recast } from './Recast';
 
+export interface PrintOptions {
+  prettier?: string | null;
+  prettierConfig?: any;
+}
+
 export class RQuery {
   public static parse(source: string): AstElement {
     return new AstElement(Recast.parse(source));
   }
 
-  public static async print(
-    element: AstElement,
-    options: any = {},
-  ): Promise<string> {
+  public static print(element: AstElement, options: PrintOptions = {}): string {
     let code = Recast.print(element.node);
 
     options = Object.assign(
@@ -20,13 +22,11 @@ export class RQuery {
     );
 
     if (options.prettier) {
-      const prettierConfig = await prettier.resolveConfig(options.resolveFrom);
       code = prettier.format(code, {
-        ...prettierConfig,
+        ...(options.prettierConfig || {}),
         parser: options.prettier,
       });
     }
-
     return code;
   }
 

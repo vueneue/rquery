@@ -2,7 +2,7 @@ import { AstElement } from './AstElement';
 import createFromNode from '../utils/createFromNode';
 
 export class ArrayElement extends AstElement {
-  public get(index: number): AstElement {
+  public getAt(index: number): AstElement {
     return createFromNode(this.node.elements[index], [
       ...this.parents,
       this.node,
@@ -10,17 +10,31 @@ export class ArrayElement extends AstElement {
   }
 
   public append(value: any) {
+    if (value instanceof AstElement) {
+      value = value.node;
+    }
     this.node.elements.push(value);
     return this;
   }
 
   public prepend(value: any) {
+    if (value instanceof AstElement) {
+      value = value.node;
+    }
     this.node.elements.unshift(value);
     return this;
   }
 
   public insertAt(value: any, index: number) {
+    if (value instanceof AstElement) {
+      value = value.node;
+    }
     this.node.elements.splice(index, 0, value);
+    return this;
+  }
+
+  public removeAt(index: number) {
+    this.node.elements.splice(index, 1);
     return this;
   }
 

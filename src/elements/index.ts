@@ -1,4 +1,5 @@
 export * from './VariableElement';
+export * from './FuncElement';
 export * from './ObjectElement';
 export * from './NewElement';
 export * from './ArrayElement';

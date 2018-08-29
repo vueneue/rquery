@@ -3,24 +3,39 @@ import createFromNode from '../utils/createFromNode';
 import { RQuery } from '../RQuery';
 
 export class ObjectElement extends AstElement {
-  public get(key: string): AstElement {
+  public getProp(key: string): AstElement {
     const prop = this.node.properties.find(item => item.key.name === key);
     if (prop) {
       return createFromNode(prop.value, [...this.parents, this.node, prop]);
     }
   }
 
-  public set(key: string, value: any, index?: number) {
-    const el = this.get(key);
+  public setProp(key: string, value: any, index: number = -1) {
+    const el = this.getProp(key);
+
+    if (value instanceof AstElement) {
+      value = value.node;
+    }
+
     if (el) {
       el.replace(value);
     } else {
       const prop = RQuery.createProperty(key, value);
-      if (!index) {
+      if (index < 0) {
         this.node.properties.push(prop);
       } else {
         this.node.properties.splice(index, 0, prop);
       }
+    }
+    return this;
+  }
+
+  public removeProp(key: string) {
+    const propIndex = this.node.properties.findIndex(
+      item => item.key.name === key,
+    );
+    if (propIndex >= 0) {
+      this.node.properties.splice(propIndex, 1);
     }
     return this;
   }

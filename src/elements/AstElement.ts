@@ -12,7 +12,8 @@ export class AstElement {
       this.node.program ? this.node.program : this.node,
       elements,
     );
-    return results;
+    const { AstElements } = require('./AstElements');
+    return new AstElements(results);
   }
 
   public parent(index: number = 1) {
@@ -39,8 +40,7 @@ export class AstElement {
   }
 
   public remove() {
-    if (!this.parents.length)
-      throw new Error('Unable to remove without parents');
+    if (!this.parents.length) return this;
 
     const parent = this.parent();
     const parentNode = this.parent().node;
@@ -66,12 +66,13 @@ export class AstElement {
   }
 
   public replace(node) {
-    if (!this.parents.length)
-      throw new Error('Unable to replace without parents');
-
     if (typeof node === 'string') {
       node = Recast.parse(node).program.body[0];
+    } else if (node instanceof AstElement) {
+      node = node.node;
     }
+
+    if (!this.parents.length) return this;
 
     const parent = this.parent();
     const parentNode = this.parent().node;
